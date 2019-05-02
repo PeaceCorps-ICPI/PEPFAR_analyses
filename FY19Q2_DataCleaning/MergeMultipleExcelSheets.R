@@ -9,6 +9,7 @@
 #library(openxlsx)
 library(readxl)
 library(purrr)
+library(tidyverse)
 
 #merge all sheets in indicator extract, adding columns in a wide format
 file <- 'VRT_Extract_ksato_30_Apr_2019_08_00_22.xlsx'
@@ -21,5 +22,8 @@ colnames(df)
 #drop any unnecessary columns
 subdf <- df[c(-(1:2), -(22:23), -(27:28),  -(33:46), -(209:234), -(290:387))]
 colnames(subdf)
+
+#reshape dataset from wide to long
+longdf <- gather(subdf, key= "disaggregate", "value", 34:251, na.rm=TRUE)
 
 write.xlsx(subdf, file = "VRTmergedNamibia_HE_CED_ED.xlsx", colNames = TRUE)
