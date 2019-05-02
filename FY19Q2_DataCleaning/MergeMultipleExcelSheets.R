@@ -26,4 +26,7 @@ colnames(subdf)
 #reshape dataset from wide to long
 longdf <- gather(subdf, key= "disaggregate", "value", 34:251, na.rm=TRUE)
 
-write.xlsx(subdf, file = "VRTmergedNamibia_HE_CED_ED.xlsx", colNames = TRUE)
+#ensure value columns is numeric
+longdf$value <- as.numeric(as.character(longdf$value))
+
+write.xlsx(longdf, file = "VRTmergedNamibia_HE_CED_ED_V2.xlsx", colNames = TRUE)
