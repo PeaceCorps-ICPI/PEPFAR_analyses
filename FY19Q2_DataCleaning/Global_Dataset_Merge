@@ -5,9 +5,6 @@
 #set working directory and load libraries
 setwd("C:/Users/Ksato/Peace Corps/Global Dataset")
 
-#install.packages (purr)
-#install.packages('openxlsx')
-#install.packages(readxl)
 library(openxlsx)
 library(readxl)
 library(purrr)
@@ -44,10 +41,11 @@ df2 <- subset(df1, IndicatorCode == "HE-079" | IndicatorCode == "HE-083" | Indic
 unique (df2$IndicatorCode)           
                    
 #check column names
-colnames(df2)
+column_length<- colnames(df2)
+col_last<-length(column_length)
 
 #reshape dataset from wide to long
-longdf <- gather(df2, key= "disaggregate", "value", 54:168, na.rm=TRUE)
+longdf <- gather(df2, key= "disaggregate", "value", 54:col_last, na.rm=TRUE)
 colnames(longdf)
 
 #ensure value columns is numeric
