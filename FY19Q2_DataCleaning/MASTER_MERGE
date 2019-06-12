@@ -69,7 +69,7 @@ for(x in list2){
 #check column names
 colnames(collector)
 
-#drop any unnecessary columns
+#drop any unnecessary columns 
 subdf <- collector[c(-(1:2), -(23:28), -(27:28),  -(33:46))]
 colnames(subdf)
 
