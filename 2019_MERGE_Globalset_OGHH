@@ -1,9 +1,13 @@
 #Purpose: To create a global PC dataset for all HE indicators (+Youth, AG)
-#Date: 5/16/19
+#Date: 9/13/19
 #Data source: Post indicator extracts
 
 #set working directory and load libraries
-setwd("C:/Users/kweeks/R codes")
+setwd("C:/Users/ksato/Peace Corps/Global Dataset")
+install.packages("tidyverse")
+install.packages("openxlsx")
+install.packages("readxl")
+install.packages("purrr")
 
 library(openxlsx)
 library(readxl)
@@ -11,7 +15,7 @@ library(purrr)
 library(tidyverse)
 
 #####Update Parent folder file path as needed#####
-Parent.Folder <- 'C:/Users/kweeks/R codes/All Country 2019/June 2019'
+Parent.Folder <- 'C:/Users/Ksato/PEACE CORPS/Global Dataset/2019'
 list <-list.files(Parent.Folder, full.names = TRUE, recursive = FALSE)
 
 list2 <- list[grep(".xlsx", list)]
@@ -297,33 +301,26 @@ for(x in list2){
                   IndicatorCode == "CED_Econ_004"|
                   IndicatorCode == "CED_Econ_005"|
                   IndicatorCode == "CED_Econ_020"|
-                  IndicatorCode == "HE-142-PEPFAR (FY2016)"| 
-                  IndicatorCode == " HE 1.3.HE-GN-001" |
-                  IndicatorCode == "HE 2.1.HE-GN-003" |
-                  IndicatorCode == "HE 2.1.HE-GN-004") 
-                
-  
-}  
-  
-  
-  unique (df2$IndicatorCode)           
-  
-  #check column names
-  column_length<- colnames(df2)
-  col_last<-length(column_length)
-  
-  #reshape dataset from wide to long
-  longdf <- gather(df2, key= "disaggregate", "value", 55:col_last, na.rm=TRUE)
-  colnames(longdf)
-  
-  #ensure value columns is numeric
-  longdf$value <- as.numeric(as.character(longdf$value))
-  
-  #collector collects collection of collectibles (all excel files)
-  collector <- rbind(collector,longdf)
-  
-  
+                  IndicatorCode == "HE-142-PEPFAR (FY2016)") 
 
+#check column names
+column_length<- colnames(df2)
+col_last<-length(column_length)
+
+#reshape dataset from wide to long
+longdf <- gather(df2, key= "disaggregate", "value", 55:col_last, na.rm=TRUE)
+
+#ensure value columns is numeric
+longdf$value <- as.numeric(as.character(longdf$value))
+
+#collector collects collection of collectibles (all excel files)
+collector <- rbind(collector,longdf)
+
+}
+
+#Check Posts and Indicators remaining
+unique (collector$PostName) 
+unique (collector$IndicatorCode) 
 
 #check column names
 colnames(collector)
@@ -340,5 +337,4 @@ subdf [is.na(subdf)]=""
 is.na(subdf)
 
 #export master file
-write.xlsx(subdf, file = "Global_Dataset_2018_3.xlsx", row.names = F)
-
+write.xlsx(subdf, file = "Global_Dataset_2019_.xlsx", row.names = F)
